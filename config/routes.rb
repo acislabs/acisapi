@@ -15,9 +15,17 @@ Acisapi::Application.routes.draw do
   #   end
   # end
 
-  api_version(:module => "v1", :header => {:name => "Accept", :value => "application/vnd.acis.json; version=1"}) do
-    resources :verification_codes
-    resources :users
-    resources :profiles
+  # api_version(:module => "v1", :header => {:name => "Accept", :value => "application/vnd.acis.json; version=1"}) do
+  #   resources :verification_codes
+  #   resources :users
+  #   resources :profiles
+  # end
+
+  namespace :api, defaults: { format: 'json' } do
+    scope module: :v1 do
+      resources :verification_codes
+      resources :users
+      resources :profiles
+    end
   end
 end

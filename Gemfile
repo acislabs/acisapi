@@ -6,11 +6,11 @@ gem 'rails', '4.1.4'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
-gem 'api-versions'
+# gem 'api-versions'
 gem 'devise'
 gem 'paperclip'
 gem 'twilio-ruby'
-gem 'versionist'
+# gem 'versionist'
 #gem 'faker', git: 'https://github.com/stympy/faker'
 
 
