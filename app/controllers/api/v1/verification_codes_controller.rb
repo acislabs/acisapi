@@ -11,10 +11,12 @@ class Api::V1::VerificationCodesController < ApplicationController
 
     code = Constants::VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
 
+    clean_number = params[:mobile_number].gsub(/[^\d]/, '')
+
     @verification_code = VerificationCode.new(
-      mobile_number: User.first.mobile_number,
+      mobile_number: clean_number,
       code: code,
-      name: User.first.profiles.first.name
+      name: params[:name]
     )
 
     if @verification_code.save
