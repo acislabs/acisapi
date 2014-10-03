@@ -20,8 +20,7 @@ class User < ActiveRecord::Base
   has_many :ignored_users
 
   scope :active, -> {where active: true}
-  # scope :unignored, -> { joins(:ignored_users).where('ignored_users.ignorable_id') }
-
+  
   validates_presence_of :mobile_number, :device_token
   before_create :generate_access_token
   before_create :sanitize_mobile_number
@@ -39,12 +38,20 @@ class User < ActiveRecord::Base
   end
 
   def name
-    default_profile.present? ? default_profile.name : VerificationCode.find_by(mobile_number: mobile_number).name
+    default_profile.present? ? default_profile.name : VerificationCode.find_by(mobile_number: mobile_number).try(:name)
   end
 
   def first_name
     name.to_s.split(' ').first
   end
+
+  # def avatar; default_profile.try :avatar; end
+
+  def email; default_profile.try :email; end
+
+  def company; default_profile.try :company; end
+  def website; default_profile.try :website; end
+  def job_title; default_profile.try :job_title; end
 
   private
 
@@ -53,7 +60,7 @@ class User < ActiveRecord::Base
   end
 
   def methods_list
-    %w(name first_name)
+    %w(name first_name email company website job_title)
   end
 
   def generate_access_token

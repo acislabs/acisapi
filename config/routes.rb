@@ -17,7 +17,9 @@ Acisapi::Application.routes.draw do
         collection do
           get :get_user
           post :create_user
-          put :deactivate_user
+          post :deactivate_user
+          post :ignore
+          post :resend_verification_code
         end
       end
       resources :profiles do

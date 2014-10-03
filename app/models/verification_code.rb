@@ -21,19 +21,25 @@ class VerificationCode < ActiveRecord::Base
 
   scope :not_active, ->{ where(active: false) }
 
-  def self.send_verification_code(mobile_number, name)
-    code = Constants::VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
+  def self.send_verification_code(mobile_number, name, code)
+
+    if code.nil?
+      code = Constants::VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
+    end
     
-    verification_code = VerificationCode.find_or_initialize_by(mobile_number: MobileParser.number_for_saving(mobile_number))
+    clean_number = MobileParser.number_for_saving(mobile_number)
+    
+    verification_code = VerificationCode.find_or_initialize_by(mobile_number: clean_number)
 
     if verification_code.new_record?
       verification_code.update(
-        mobile_number: MobileParser.number_for_saving(mobile_number),
+        mobile_number: clean_number,
         code: code,
         name: name
       )
-      verification_code.send_verification
     end
+    
+    verification_code.send_verification
   end
 
   def send_verification

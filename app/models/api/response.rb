@@ -22,7 +22,7 @@ class Api::Response
   end
 
   class << self
-    def build(success, resource = nil, **response)
+    def build(success, resource = nil, response = {})
       new(success, resource, response).merged_response.as_json
     end
   end

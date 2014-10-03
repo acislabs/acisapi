@@ -37,9 +37,9 @@ class Profile < ActiveRecord::Base
 
   delegate :mobile_number, to: :user
   
-  def avatar_url
-    avatar.try :url
-  end
+  # def avatar_url
+  #   avatar.try :url
+  # end
 
   private
 
@@ -48,6 +48,6 @@ class Profile < ActiveRecord::Base
   end
 
   def methods_list
-    %w(avatar_url mobile_number)
+    %w(mobile_number)
   end
 end
