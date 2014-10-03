@@ -1,0 +1,21 @@
+# Social Networking Sites
+defaults: &defaults
+  twilio_sID:             "AC371a43ca6816471f70c41c1592a3c408"
+  twilio_auth_token:      "6d775f9a64daa8655c300a14b466a268"
+  twilio_number:          "+17316137812"
+  
+
+development:
+  host: "localhost:3000"
+  <<: *defaults
+
+test:
+  host: "localhost:3000"
+  <<: *defaults
+
+staging:
+  host: "stage.plumalley.com"
+  <<: *defaults
+
+production:
+  <<: *defaults
