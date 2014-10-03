@@ -6,7 +6,7 @@ class AddInitialTables < ActiveRecord::Migration
       t.string     :access_token
       t.string     :operating_system, default: 'Android', null: false
       t.string     :device_token
-      t.boolean    :active, default: true, null: false
+      t.boolean    :active, default: false, null: false
 
       t.timestamps
     end

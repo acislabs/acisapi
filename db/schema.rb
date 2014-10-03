@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20141002185917) do
     t.string   "access_token"
     t.string   "operating_system", default: "Android", null: false
     t.string   "device_token"
-    t.boolean  "active",           default: true,      null: false
+    t.boolean  "active",           default: false,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

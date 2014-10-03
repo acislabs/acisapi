@@ -7,10 +7,16 @@ Acisapi::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     scope module: :v1 do
-      resources :verification_codes
+      resources :sessions
+      resources :verification_codes do
+        collection do
+          post :check_verification
+        end
+      end
       resources :users do
         collection do
           get :get_user
+          post :create_user
         end
       end
       resources :profiles

@@ -13,10 +13,6 @@ class Profile < ActiveRecord::Base
 		preserve_files: true
 
 
-	def create_default_profile(name)
-		Profile.create(
-			name: params[:name]
-    )
-	end
+	
 
 end

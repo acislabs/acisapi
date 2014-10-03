@@ -4,7 +4,7 @@ class Api::V1::ProfilesController < ApplicationController
 		@profile = Profile.new(trusted_params)
     
     if @profile.save
-      render json: @profile
+      render json: {success: true}
     else
       render json: {success: false}
     end

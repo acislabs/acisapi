@@ -10,39 +10,35 @@ class VerificationCode < ActiveRecord::Base
 
   scope :not_active, ->{ where(active: false) }
 
-  def verify_and_save(attributes)
-    self.assign_attributes attributes
-    if self.verification_code == self.verification_code_confirmation
-      self.active = true
-      self.verification_code = nil
-      self.save
-    else
-      self.errors.add(:verification_code_confirmation)
-      false
+  def self.send_verification_code(mobile_number, name)
+    code = Constants::VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
+
+
+    clean_number = "+" + mobile_number
+
+    verification_code = VerificationCode.where(mobile_number: clean_number).first_or_create(
+      mobile_number: clean_number,
+      code: code,
+      name: name
+    )
+
+    if verification_code.save
+      verification_code.send_verification(code, verification_code.mobile_number, verification_code.name)
     end
   end
 
-  private
+  def send_verification(verification_code, mobile_number, name)
 
-  def issue_verification_code
-    self.verification_code = VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
-    self.save!
-  end
+    # SEND SMS!!!
 
-  def send_verification_code
-    twilio_client.account.sms.messages.create(
-      from: ENV["TWILIO_NUMBER"],
-      to: formatted_mobile_phone_number,
-      body: "#{verification_code}"
-    )
-  end
+    account_sid = CONFIG[:twilio_sID]
+    auth_token = CONFIG[:twilio_auth_token]
+    my_number = CONFIG[:twilio_number]
 
-  def twilio_client
-    @twilio_client ||= Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
-  end
-
-  # 080-1234-5678 => # +8180-1234-5678
-  def formatted_mobile_phone_number
-    "+81#{self.mobile_phone_number[1..-1]}"
+    @client = Twilio::REST::Client.new account_sid, auth_token
+     
+    sms = @client.account.sms.messages.create(:body => "Hi #{name}. Your verification code is #{verification_code}",
+        :to => mobile_number,
+        :from => my_number)
   end
 end
