@@ -24,7 +24,11 @@ Acisapi::Application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     scope module: :v1 do
       resources :verification_codes
-      resources :users
+      resources :users do
+        collection do
+          get :get_user
+        end
+      end
       resources :profiles
     end
   end

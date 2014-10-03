@@ -10,6 +10,8 @@ gem 'pg'
 gem 'devise'
 gem 'paperclip'
 gem 'twilio-ruby'
+gem 'pry'
+
 # gem 'versionist'
 #gem 'faker', git: 'https://github.com/stympy/faker'
 

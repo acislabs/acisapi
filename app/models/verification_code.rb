@@ -3,6 +3,8 @@ class VerificationCode < ActiveRecord::Base
 
   #validates :mobile_number, format: { with: /^\d{3}-?\d{4}-?\d{4}$/ }, allow_blank: true, presence: true
 
+  validates :mobile_number, presence: true
+
   # after_create :issue_verification_code
   # after_create :send_verification_code
 

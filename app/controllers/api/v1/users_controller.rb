@@ -14,6 +14,24 @@ class Api::V1::UsersController < ApplicationController
 	end
 
   def update
+    @user.attributes = trusted_params
+    if @campaign.save
+      CampaignMailer.campaign_status_email(@campaign).deliver if params[:sendmail].eql?('yes')
+      if @campaign.approved? && @campaign.start_at <= Date.today
+        @campaign.live!
+
+        # POST TO FB
+        message = "Please help my campaign on Plum Alley reach its goal!"
+        ticked_subscription = @campaign.user.subscription.fb_create_campaign
+        post_live_campaign_facebook(@campaign, @campaign.user, message, ticked_subscription) unless @campaign.nil?
+      end
+
+      render json: @campaign, root: false
+    else
+      render json: {
+          message: 'Validation failed', errors: @campaign.errors.full_messages
+      }, status: 422
+    end
   end
 
   def index

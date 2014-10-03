@@ -1,4 +1,4 @@
-%w(+639178061524 +639177696957 +639152222222 +6391111111 +6395555555 +6399999999).each do |num|
+%w(+639177696957 +639152222222 +6391111111 +6395555555 +6399999999).each do |num|
   	puts "Creating sample verification_codes"
     VerificationCode.create(
 	    mobile_number: num, 
@@ -11,7 +11,7 @@ end
 verification_codes = VerificationCode.all
 
 verification_codes.each do |code|
-	%w(+639178061524 +639177696957 +639152222222 +6391111111 +6395555555 +6399999999).each do |num|
+	%w(+639177696957 +639152222222 +6391111111 +6395555555 +6399999999).each do |num|
 	  	puts "Creating sample user for mobile num #{num}"
 
 	  	if num == code.mobile_number

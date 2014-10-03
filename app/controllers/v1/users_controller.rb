@@ -4,9 +4,11 @@ class Api::V1::UsersController < ApplicationController
     unless verification.nil?
       @user = User.new(trusted_params)
       if @user.save
+        Profile.create_default_profile(params[:name]) #create profile
+        verification.destroy # delete verification code!
         render json: {user: @user, success: true}
       else
-        render json: {success: false}
+        render json: {success: false, message:"Your verification code is not valid!"}
       end
     else
       return false
@@ -31,7 +33,6 @@ class Api::V1::UsersController < ApplicationController
 	def trusted_params
     params.require(:user).permit(
       :mobile_number,
-      :access_token,
       :operating_system,
       :device_token,
       :active

@@ -8,12 +8,12 @@ class Api::V1::VerificationCodesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-
+   
     code = Constants::VERIFICATION_CODE_LENGTH.times.map{ Random.rand(9) + 1 }.join
 
-    clean_number = params[:mobile_number].gsub(/[^\d]/, '')
+    clean_number = params[:mobile_number].gsub(" ", "+")
 
-    @verification_code = VerificationCode.new(
+    @verification_code = VerificationCode.where(mobile_number: clean_number).first_or_create(
       mobile_number: clean_number,
       code: code,
       name: params[:name]
@@ -41,12 +41,4 @@ class Api::V1::VerificationCodesController < ApplicationController
         :to => mobile_number,
         :from => my_number)
   end
-
-  # def trusted_params
-  #   params.require(:verification_code).permit(
-  #     :mobile_number,
-  #     :code,
-  #     :name
-  #   )
-  # end
 end

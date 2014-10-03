@@ -2,6 +2,8 @@
 class Profile < ActiveRecord::Base
   belongs_to :user
 
+  validates :name, presence: true
+
   # Paperclip
   has_attached_file :photo, 
     styles: {
@@ -9,4 +11,12 @@ class Profile < ActiveRecord::Base
 		},
 		default_url: lambda { |image| ActionController::Base.helpers.asset_path('default.png') },
 		preserve_files: true
+
+
+	def create_default_profile(name)
+		Profile.create(
+			name: params[:name]
+    )
+	end
+
 end
