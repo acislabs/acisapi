@@ -10,6 +10,7 @@ gem 'api-versions'
 gem 'devise'
 gem 'paperclip'
 gem 'twilio-ruby'
+gem 'versionist'
 #gem 'faker', git: 'https://github.com/stympy/faker'
 
 

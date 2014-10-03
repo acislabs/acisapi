@@ -20,7 +20,6 @@ class Api::V1::VerificationCodesController < ApplicationController
     if @verification_code.save
       send_verification(code, @verification_code.mobile_number, @verification_code.name)
     end
-
   end
  
   def send_verification(verification_code, mobile_number, name)
@@ -37,7 +36,8 @@ class Api::V1::VerificationCodesController < ApplicationController
         :to => mobile_number,
         :from => my_number)
 
-    puts sms.from
+    puts @sms
+
   end
 
   # def trusted_params

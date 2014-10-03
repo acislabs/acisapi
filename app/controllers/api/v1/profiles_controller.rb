@@ -1,4 +1,5 @@
 class Api::V1::ProfilesController < ApplicationController
+
 	def create
 		@profile = Profile.new(trusted_params)
     
@@ -7,8 +8,13 @@ class Api::V1::ProfilesController < ApplicationController
     else
       render json: {success: false}
     end
-    
 	end
+
+  def destroy
+  end
+
+  def update
+  end
 
 	def trusted_params
     params.require(:profile).permit(
