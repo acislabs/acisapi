@@ -19,6 +19,9 @@ class Api::V1::VerificationCodesController < ApplicationController
 
     if @verification_code.save
       send_verification(code, @verification_code.mobile_number, @verification_code.name)
+      render json: {success: true}
+    else
+      render json: {success: false}
     end
   end
  
@@ -35,9 +38,6 @@ class Api::V1::VerificationCodesController < ApplicationController
     sms = @client.account.sms.messages.create(:body => "Hi #{name}. Your verification code is #{verification_code}",
         :to => mobile_number,
         :from => my_number)
-
-    puts @sms
-
   end
 
   # def trusted_params
