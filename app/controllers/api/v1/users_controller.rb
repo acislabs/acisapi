@@ -23,7 +23,10 @@ class Api::V1::UsersController < Api::BaseController
 
   def get_user
     user = User.find_by(mobile_number: MobileParser.number_for_saving(params[:mobile_number]))
-    ignored_user = current_user.ignored_users.find_by(ignorable_id: user.id) if user.nil?
+
+    if current_user.present?
+      ignored_user = current_user.ignored_users.find_by(ignorable_id: user.id) if user.nil?
+    end
 
     if user.present? and ignored_user.blank?
       render json: Api::Response.build(true, current_user, user.as_json), status: 200
