@@ -9,6 +9,7 @@ gem 'pg'
 # gem 'api-versions'
 gem 'paperclip'
 gem 'twilio-ruby'
+gem 'devise'
 gem 'pry'
 
 # gem 'versionist'
@@ -40,6 +41,10 @@ gem 'jbuilder', '~> 1.2'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
+end
+
+group :development do
+  gem 'annotate'
 end
 
 group :production do

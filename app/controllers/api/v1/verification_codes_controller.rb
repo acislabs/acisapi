@@ -1,34 +1,21 @@
 require 'twilio-ruby'
  
-class Api::V1::VerificationCodesController < ApplicationController
+class Api::V1::VerificationCodesController < Api::BaseController
   include Webhookable
  
-  #after_filter :set_header
-  
-  skip_before_action :verify_authenticity_token
-
-  def create
-  end
-
-
   def check_verification
-    verification = VerificationCode.where(code: params[:code], mobile_number: params[:mobile_number]).first
+    verification = VerificationCode.verify(params[:code], params[:mobile_number])
 
     @user = User.where(mobile_number: params[:mobile_number]).first
 
     unless verification.nil?
+        @user.create_default_profile(verification.name)
         verification.destroy # delete verification code!
+        @user.active!
 
-        @user.update_attributes(active: true)
-
-        render json: {success: true}
+        render json: Api::Response.build(true, current_user), status: 200
     else
-        render json: {success: false, message:"Your verification code is not valid!"}
+        render json: Api::Response.build(false, current_user, message: "Your verification code is not valid!"), status: 400
     end
   end
-
-  def destroy
-
-  end
-
 end

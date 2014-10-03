@@ -1,2 +1,2 @@
-class Api::V1::IgnoredUsersController < ApplicationController
+class Api::V1::IgnoredUsersController < Api::BaseController
 end

@@ -13,9 +13,6 @@ test:
   host: "localhost:3000"
   <<: *defaults
 
-staging:
-  host: "stage.plumalley.com"
-  <<: *defaults
-
 production:
+  host: '127.0.0.1'
   <<: *defaults

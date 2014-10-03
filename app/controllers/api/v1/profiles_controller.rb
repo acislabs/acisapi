@@ -1,19 +1,16 @@
-class Api::V1::ProfilesController < ApplicationController
-
-	def create
-		@profile = Profile.new(trusted_params)
+class Api::V1::ProfilesController < Api::BaseController
+  def create_profile
+		profile = current_user.new(trusted_params)
     
-    if @profile.save
-      render json: {success: true}
+    if profile.save
+      render json: Api::Response.build(true, current_user, profile: profile.as_json), status: 200
     else
-      render json: {success: false}
+      render json: Api::Response.build(false, current_user), status: 400
     end
 	end
 
-  def destroy
-  end
-
-  def update
+  def index
+    render json: Api::Response.build(true, current_user, profile: current_user.default_profile.as_json), status: 200
   end
 
 	def trusted_params
@@ -23,8 +20,6 @@ class Api::V1::ProfilesController < ApplicationController
       :company,
       :website,
       :job_title,
-      :profile_type,
-      :default,
       :user_id,
       :avatar
     )

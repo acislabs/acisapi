@@ -19,7 +19,11 @@ Acisapi::Application.routes.draw do
           post :create_user
         end
       end
-      resources :profiles
+      resources :profiles do
+        collection do
+          post :create_profile
+        end
+      end
     end
   end
 end
