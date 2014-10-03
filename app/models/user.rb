@@ -17,15 +17,17 @@ class User < ActiveRecord::Base
   include Concerns::AsJson
 
   has_many :profiles
-  # has_many :ignored_users
+  has_many :ignored_users
 
   scope :active, -> {where active: true}
+  # scope :unignored, -> { joins(:ignored_users).where('ignored_users.ignorable_id') }
 
   validates_presence_of :mobile_number, :device_token
   before_create :generate_access_token
+  before_create :sanitize_mobile_number
 
   def create_default_profile(name)
-		profiles.create(name: name)
+		profiles.create(name: name, default: true)
   end
 
   def default_profile
@@ -36,6 +38,24 @@ class User < ActiveRecord::Base
     update(active: true)
   end
 
+  def name
+    default_profile.present? ? default_profile.name : VerificationCode.find_by(mobile_number: mobile_number).name
+  end
+
+  def first_name
+    name.to_s.split(' ').first
+  end
+
+  private
+
+  def only_attributes
+    %w(mobile_number active)
+  end
+
+  def methods_list
+    %w(name first_name)
+  end
+
   def generate_access_token
     loop do
       @token = Devise.friendly_token
@@ -43,5 +63,10 @@ class User < ActiveRecord::Base
     end
 
     assign_attributes(access_token: @token)
+  end
+
+
+  def sanitize_mobile_number
+    assign_attributes(mobile_number: MobileParser.number_for_saving(mobile_number))
   end
 end
