@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
 	def create
     verification = VerificationCode.find_by(code: params[:code], mobile_number: params[:mobile_number])
     unless verification.nil?
