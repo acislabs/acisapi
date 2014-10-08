@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def default_profile
-    profiles.find_by(default: true)
+    profiles.find_by(default: false)
   end
 
   def active!
